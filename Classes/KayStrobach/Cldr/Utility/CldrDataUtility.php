@@ -8,6 +8,7 @@
 
 namespace KayStrobach\Cldr\Utility;
 use TYPO3\Flow\Annotations as Flow;
+use TYPO3\Flow\Error\Debugger;
 use TYPO3\Flow\I18n\Cldr\CldrModel;
 use KayStrobach\Cldr\Domain\Model\Language;
 use TYPO3\Flow\I18n\Locale;
@@ -56,16 +57,19 @@ class CldrDataUtility
      * @return array|boolean
      */
     public function getLanguages() {
-        if($this->languageCache->get('languages')) {
-            $buffer = $this->languageCache->get('languages');
+        $languagesFromCache = $this->languageCache->get('languages');
+        if($languagesFromCache) {
+            return $languagesFromCache;
         } else {
             $buffer = $this->getKeyValues('localeDisplayNames/languages');
-            $this->languageCache->set('languages', $buffer);
+
         }
         $languages = array();
         foreach($buffer as $key=>$name) {
-            $languages[] = new Language($key, $name);
+            $languages[$key] = new Language($key);
         }
+
+        $this->languageCache->set('languages', $languages);
         return $languages;
     }
 
@@ -75,30 +79,42 @@ class CldrDataUtility
      * @return string
      */
     public function getLanguageLocalizedName(Locale $locale, Language $language) {
-        $cacheIdentifier = 'label-' . $language->getKey() . '-in-' . $locale->getLanguage();
-        if($this->languageCache->get($cacheIdentifier)) {
-            return $this->languageCache->get($cacheIdentifier);
+        $cacheIdentifier = 'language-labels-' . $locale->getLanguage();
+        $labelsFromCache = $this->languageCache->get($cacheIdentifier);
+        if($labelsFromCache) {
+            return $labelsFromCache[$language->getKey()];
         }
-        try {
-            $key = 'language[@type="' . $language->getKey() . '"]';
-            $raw = $this->cldrRepository->getModelForLocale($locale)->getRawArray('localeDisplayNames/languages');
 
-            unset($locale);
-            if(is_array($raw)) {
-                if(array_key_exists($key, $raw)) {
-                    $label = $raw[$key];
-                } else {
-                    $label = $language->getName();
-                }
-            } else {
-                $label = 'Nothing found for ' . $language->getKey();
-            }
-            $this->languageCache->set($cacheIdentifier, $label);
-            return $label;
+        try {
+            $raw = $this->cldrRepository->getModelForLocale($locale)->getRawArray('localeDisplayNames/languages');
         } catch(\Exception $e) {
-            // do nothing
+            return 'Problem reading data for ' . $language->getKey();
         }
-        return 'Nothing found for ' . $language->getKey();
+
+        $languages = $this->getLanguages();
+        $labels = array();
+        /** @var Language $currentLanguage */
+
+        foreach($languages as $currentLanguage) {
+            try {
+                $key = 'language[@type="' . $currentLanguage->getKey() . '"]';
+                if(is_array($raw)) {
+                    if(array_key_exists($key, $raw)) {
+                        $labels[$currentLanguage->getKey()] = $raw[$key];
+                    } else {
+                        $labels[$currentLanguage->getKey()] = $currentLanguage->getName();
+                    }
+                } else {
+                    $labels[$currentLanguage->getKey()] = 'Nothing found for ' . $currentLanguage->getKey();
+                }
+
+            } catch(\Exception $e) {
+                // not found
+                // $labels[$key] = 'Nothing found for ' . $language->getKey();
+            }
+        }
+        $this->languageCache->set($cacheIdentifier, $labels);
+        return $labels[$language->getKey()];
     }
     /**
      * Get an array of all values in the CLDR where the key is the type attribute

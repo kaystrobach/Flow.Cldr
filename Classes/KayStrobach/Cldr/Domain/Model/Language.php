@@ -6,42 +6,42 @@ use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\I18n\Locale;
 
 
+/**
+ * @Flow\ValueObject
+ */
 class Language
 {
     /**
+     * @var string
+     */
+    protected $key;
+
+    /**
      * @Flow\Inject
+     * @Flow\Transient()
      * @var \TYPO3\Flow\I18n\Detector
      */
     protected $detector;
 
     /**
-     * @var string
-     */
-    protected $key;
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var CldrDataUtility
      * @Flow\Inject
+     * @Flow\Transient()
+     * @var CldrDataUtility
      */
     protected $cldrUtility;
 
     /**
-     * @var \TYPO3\Flow\I18n\Service
      * @Flow\Inject
+     * @Flow\Transient()
+     * @var \TYPO3\Flow\I18n\Service
      */
     protected $i18nService;
 
     /**
      * @param $key
-     * @param $name
      */
-    public function __construct($key, $name)
+    public function __construct($key)
     {
-        $this->name = $name;
         $this->key = $key;
     }
 
@@ -55,9 +55,13 @@ class Language
      */
     public function getName()
     {
-        return $this->name;
+        $locale = $this->detector->detectLocaleFromLocaleTag('en');
+        return $this->getNameForLocale($locale);
     }
 
+    /**
+     * @return string
+     */
     public function getNameByForCurrentLocale() {
         $locale = $this->i18nService->getConfiguration()->getCurrentLocale();
         return $this->getNameForLocale($locale);
@@ -72,6 +76,10 @@ class Language
         return $this->getNameForLocale($locale);
     }
 
+    /**
+     * @param Locale $locale
+     * @return string
+     */
     public function getNameForLocale(Locale $locale) {
        return $this->cldrUtility->getLanguageLocalizedName($locale, $this);
     }

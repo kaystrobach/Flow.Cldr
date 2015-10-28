@@ -22,6 +22,14 @@ class LanguageCommandController extends \TYPO3\Flow\Cli\CommandController
      */
     protected $detector;
 
+    public function generateAllCommand() {
+        $languages = $this->languageRepository->findAll();
+        /** @var Language $language */
+        foreach($languages as $language) {
+            $this->outputFormatted($language->getKey() . ' - ' . $language->getLocalizedName());
+        }
+    }
+
     /**
      * @param string $locale
      */
@@ -29,13 +37,10 @@ class LanguageCommandController extends \TYPO3\Flow\Cli\CommandController
         ini_set('memory_limit', '340M');
         /** @var Language $language */
         $languages = $this->languageRepository->findAll();
-
         $localeObject = $this->detector->detectLocaleFromLocaleTag($locale);
 
-
         foreach($languages as $language) {
-            #echo $language->getLocalizedName() . PHP_EOL;
-            echo $language->getNameForLocale($localeObject) . PHP_EOL;
+            $this->outputFormatted($language->getKey() . ' - ' . $language->getNameForLocale($localeObject));
         }
     }
 }
