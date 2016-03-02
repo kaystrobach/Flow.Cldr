@@ -2,3 +2,7 @@ KayStrobach_Cldr_Language_Cache:
   frontend: TYPO3\Flow\Cache\Frontend\VariableFrontend
   backend: TYPO3\Flow\Cache\Backend\FileBackend
   persistent: true
+KayStrobach_Cldr_Cache:
+  frontend: TYPO3\Flow\Cache\Frontend\VariableFrontend
+  backend: TYPO3\Flow\Cache\Backend\FileBackend
+  persistent: true

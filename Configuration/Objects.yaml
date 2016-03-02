@@ -7,3 +7,10 @@ KayStrobach\Cldr\Utility\CldrDataUtility:
         arguments:
           1:
             value: KayStrobach_Cldr_Language_Cache
+    cldrCache:
+      object:
+        factoryObjectName: TYPO3\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: KayStrobach_Cldr_Cache

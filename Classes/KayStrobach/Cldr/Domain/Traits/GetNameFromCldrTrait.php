@@ -1,16 +1,11 @@
 <?php
-namespace KayStrobach\Cldr\Domain\Model;
+
+namespace KayStrobach\Cldr\Domain\Traits;
 
 use KayStrobach\Cldr\Utility\CldrDataUtility;
-use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\I18n\Locale;
 
-
-/**
- * @todo move, to LocaleDisplayName, but set ORM\TableName
- * @Flow\ValueObject
- */
-class Language
+trait GetNameFromCldrTrait
 {
     /**
      * @var string
@@ -46,12 +41,17 @@ class Language
         $this->key = $key;
     }
 
+    /**
+     * @return string
+     */
     public function getKey()
     {
         return $this->key;
     }
 
     /**
+     * Returns the name for the entity for locale en
+     *
      * @return string
      */
     public function getName()
@@ -61,15 +61,21 @@ class Language
     }
 
     /**
+     * Returns the name of the entity currently set in i18n Service
+     *
      * @return string
      */
-    public function getNameByForCurrentLocale() {
+    public function getNameByCurrentLocale() {
         $locale = $this->i18nService->getConfiguration()->getCurrentLocale();
         return $this->getNameForLocale($locale);
     }
 
     /**
-     * @return \TYPO3\Flow\I18n\Locale
+     * Returns name of the entity in the native language
+     * --> just works for languages
+     * @todo
+     *
+     * @return string
      */
     public function getLocalizedName()
     {
@@ -82,6 +88,6 @@ class Language
      * @return string
      */
     public function getNameForLocale(Locale $locale) {
-       return $this->cldrUtility->getLanguageLocalizedName($locale, $this);
+        return $this->cldrUtility->getLanguageLocalizedName($locale, $this);
     }
 }

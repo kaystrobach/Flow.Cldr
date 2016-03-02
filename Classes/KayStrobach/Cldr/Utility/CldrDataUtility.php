@@ -25,6 +25,11 @@ class CldrDataUtility
     /**
      * @var \TYPO3\Flow\Cache\Frontend\VariableFrontend
      */
+    protected $cldrCache;
+
+    /**
+     * @var \TYPO3\Flow\Cache\Frontend\VariableFrontend
+     */
     protected $languageCache;
 
     /**
@@ -53,6 +58,13 @@ class CldrDataUtility
     }
 
     /**
+     * @param \TYPO3\Flow\Cache\Frontend\VariableFrontend $cache
+     */
+    public function setCldrCache(\TYPO3\Flow\Cache\Frontend\VariableFrontend $cache) {
+        $this->cldrCache = $cache;
+    }
+
+    /**
      * Get an array of all language names
      * @return array|boolean
      */
@@ -71,6 +83,29 @@ class CldrDataUtility
 
         $this->languageCache->set('languages', $languages);
         return $languages;
+    }
+
+    /**
+     * @todo define $entity interface
+     *  -> getCldrName to query the rawArray
+     *  -> getKey to get the identifier
+     *
+     * @param Locale $locale
+     * @param object $entity
+     * @return string
+     */
+    public function getEntityLocalizedName(Locale $locale, $entity) {
+        $cacheIdentifier = get_class($entity) . '-' . $locale->getLanguage();
+        $labelsFromCache = $this->cldrCache->get($cacheIdentifier);
+        if($labelsFromCache) {
+            return $labelsFromCache[$entity->getKey()];
+        }
+
+        $cldrEntities = $this->getKeyValues($entity->getCldrName());
+
+        foreach($cldrEntities as $cldrEntity) {
+
+        }
     }
 
     /**
