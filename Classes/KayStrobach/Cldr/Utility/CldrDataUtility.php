@@ -23,7 +23,7 @@ use Neos\Flow\I18n\Locale;
 class CldrDataUtility
 {
     /**
-     * @var \Neos\Flow\Cache\Frontend\VariableFrontend
+     * @var \Neos\Cache\Frontend\VariableFrontend
      */
     protected $languageCache;
 
@@ -46,9 +46,9 @@ class CldrDataUtility
     protected $detector;
 
     /**
-     * @param \Neos\Flow\Cache\Frontend\VariableFrontend $cache
+     * @param \Neos\Cache\Frontend\VariableFrontend $cache
      */
-    public function setLanguageCache(\Neos\Flow\Cache\Frontend\VariableFrontend $cache) {
+    public function setLanguageCache(\Neos\Cache\Frontend\VariableFrontend $cache) {
         $this->languageCache = $cache;
     }
 
