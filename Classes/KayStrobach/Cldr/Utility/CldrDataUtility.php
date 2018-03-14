@@ -7,11 +7,11 @@
  */
 
 namespace KayStrobach\Cldr\Utility;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Error\Debugger;
-use TYPO3\Flow\I18n\Cldr\CldrModel;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Error\Debugger;
+use Neos\Flow\I18n\Cldr\CldrModel;
 use KayStrobach\Cldr\Domain\Model\Language;
-use TYPO3\Flow\I18n\Locale;
+use Neos\Flow\I18n\Locale;
 
 /**
  * Class CldrDataUtility
@@ -23,32 +23,32 @@ use TYPO3\Flow\I18n\Locale;
 class CldrDataUtility
 {
     /**
-     * @var \TYPO3\Flow\Cache\Frontend\VariableFrontend
+     * @var \Neos\Flow\Cache\Frontend\VariableFrontend
      */
     protected $languageCache;
 
     /**
-     * @var \TYPO3\Flow\Log\SystemLoggerInterface
+     * @var \Neos\Flow\Log\SystemLoggerInterface
      * @Flow\Inject
      */
     protected $systemLogger;
 
     /**
-     * @var \TYPO3\Flow\I18n\Cldr\CldrRepository
+     * @var \Neos\Flow\I18n\Cldr\CldrRepository
      * @Flow\Inject
      */
     protected $cldrRepository;
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\Flow\I18n\Detector
+     * @var \Neos\Flow\I18n\Detector
      */
     protected $detector;
 
     /**
-     * @param \TYPO3\Flow\Cache\Frontend\VariableFrontend $cache
+     * @param \Neos\Flow\Cache\Frontend\VariableFrontend $cache
      */
-    public function setLanguageCache(\TYPO3\Flow\Cache\Frontend\VariableFrontend $cache) {
+    public function setLanguageCache(\Neos\Flow\Cache\Frontend\VariableFrontend $cache) {
         $this->languageCache = $cache;
     }
 

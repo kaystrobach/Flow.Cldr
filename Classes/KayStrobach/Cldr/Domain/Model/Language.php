@@ -2,8 +2,8 @@
 namespace KayStrobach\Cldr\Domain\Model;
 
 use KayStrobach\Cldr\Utility\CldrDataUtility;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\I18n\Locale;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\I18n\Locale;
 
 
 /**
@@ -19,7 +19,7 @@ class Language
     /**
      * @Flow\Inject
      * @Flow\Transient()
-     * @var \TYPO3\Flow\I18n\Detector
+     * @var \Neos\Flow\I18n\Detector
      */
     protected $detector;
 
@@ -33,7 +33,7 @@ class Language
     /**
      * @Flow\Inject
      * @Flow\Transient()
-     * @var \TYPO3\Flow\I18n\Service
+     * @var \Neos\Flow\I18n\Service
      */
     protected $i18nService;
 
@@ -68,7 +68,7 @@ class Language
     }
 
     /**
-     * @return \TYPO3\Flow\I18n\Locale
+     * @return \Neos\Flow\I18n\Locale
      */
     public function getLocalizedName()
     {

@@ -4,11 +4,11 @@ namespace KayStrobach\Cldr\Command;
 
 use KayStrobach\Cldr\Domain\Model\Language;
 use KayStrobach\Cldr\Domain\Repository\LanguageRepository;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Error\Debugger;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Error\Debugger;
 
 
-class LanguageCommandController extends \TYPO3\Flow\Cli\CommandController
+class LanguageCommandController extends \Neos\Flow\Cli\CommandController
 {
     /**
      * @Flow\Inject
@@ -18,7 +18,7 @@ class LanguageCommandController extends \TYPO3\Flow\Cli\CommandController
 
     /**
      * @Flow\Inject
-     * @var \TYPO3\Flow\I18n\Detector
+     * @var \Neos\Flow\I18n\Detector
      */
     protected $detector;
 
