@@ -3,7 +3,7 @@
     "type": "typo3-flow-package",
     "description": "Add description here",
     "require": {
-        "neos/flow": "~5.3"
+        "neos/flow": "^7 || ^8"
     },
     "autoload": {
         "psr-0": {
